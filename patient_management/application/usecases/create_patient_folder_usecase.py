@@ -2,14 +2,14 @@ from datetime import date
 from typing import TypedDict
 
 from pydantic import ValidationError
-from domain.entities.patient import Patient
-from domain.exceptions.missing_field__exception import MissingFieldException
-from domain.exceptions.patient_already_exist_exception import PatientAlreadyExistsException
-from domain.ports.id_generator_protocol import IDGeneratorProtocol
-from domain.ports.patient_repository_protocol import PatientRepositoryProtocol
-from domain.services.patient_service import PatientService
+from patient_management.domain.entities.patient import Patient
+from patient_management.domain.exceptions.missing_field__exception import MissingFieldException
+from patient_management.domain.exceptions.patient_already_exist_exception import PatientAlreadyExistsException
+from patient_management.domain.ports.id_generator_protocol import IDGeneratorProtocol
+from patient_management.domain.ports.patient_repository_protocol import PatientRepositoryProtocol
+from patient_management.domain.services.patient_service import PatientService
 
-class PatientDataPaylod(TypedDict):
+class PatientDataPayload(TypedDict):
     firstname: str
     lastname: str
     email: str
@@ -23,7 +23,7 @@ class CreatePatientFolderUseCase:
         self.repository = repository
         self.id_generator = id_generator
 
-    def execute(self, payload: PatientDataPaylod):
+    def execute(self, payload: PatientDataPayload):
         existing_patient = self.repository.find_by_email(payload["email"])
         if existing_patient:
             raise PatientAlreadyExistsException(existing_patient.email)

@@ -1,7 +1,7 @@
 
-from domain.entities.patient import Patient
-from domain.exceptions.missing_consent_patient_exception import MissingConsentPatientException
-from domain.exceptions.missing_guardian_consent_exception import MissingGuardianConsentException
+from patient_management.domain.entities.patient import Patient
+from patient_management.domain.exceptions.missing_consent_patient_exception import MissingConsentPatientException
+from patient_management.domain.exceptions.missing_guardian_consent_exception import MissingGuardianConsentException
 
 
 class PatientService:

@@ -1,5 +1,5 @@
-from domain.entities.patient import Patient
-from domain.ports.patient_repository_protocol import PatientRepositoryProtocol
+from patient_management.domain.entities.patient import Patient
+from patient_management.domain.ports.patient_repository_protocol import PatientRepositoryProtocol
 
 
 class InMemoryPatientRepository(PatientRepositoryProtocol):

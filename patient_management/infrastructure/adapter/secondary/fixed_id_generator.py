@@ -1,4 +1,4 @@
-from domain.ports.id_generator_protocol import IDGeneratorProtocol
+from patient_management.domain.ports.id_generator_protocol import IDGeneratorProtocol
 
 
 class FixedIDGenerator(IDGeneratorProtocol):

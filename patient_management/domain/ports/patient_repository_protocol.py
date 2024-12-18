@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from domain.entities.patient import Patient
+from patient_management.domain.entities.patient import Patient
 
 
 class PatientRepositoryProtocol(Protocol):
