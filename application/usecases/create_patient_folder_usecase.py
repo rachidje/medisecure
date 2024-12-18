@@ -3,12 +3,11 @@ from typing import TypedDict
 
 from pydantic import ValidationError
 from domain.entities.patient import Patient
-from domain.exceptions.missing_consent_patient_exception import MissingConsentPatientException
 from domain.exceptions.missing_field__exception import MissingFieldException
-from domain.exceptions.missing_guardian_consent_exception import MissingGuardianConsentException
 from domain.exceptions.patient_already_exist_exception import PatientAlreadyExistsException
 from domain.ports.id_generator_protocol import IDGeneratorProtocol
 from domain.ports.patient_repository_protocol import PatientRepositoryProtocol
+from domain.services.patient_service import PatientService
 
 class PatientDataPaylod(TypedDict):
     firstname: str
@@ -36,11 +35,8 @@ class CreatePatientFolderUseCase:
         except ValidationError as e:
             raise MissingFieldException(str(e.errors()[0]['loc'][0]))
         
-        if patient.is_minor() and not patient.guardian_consent:
-            raise MissingGuardianConsentException()
-        
-        if not patient.consent:
-            raise MissingConsentPatientException()
+        PatientService.validate_consent(patient)
+        PatientService.validate_guardian_consent(patient)
         
         self.repository.create(patient)
         return patient_id
