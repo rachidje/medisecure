@@ -7,3 +7,4 @@ class Patient(BaseModel):
     lastname: str
     email: str
     date_of_birth: date
+    consent: bool
