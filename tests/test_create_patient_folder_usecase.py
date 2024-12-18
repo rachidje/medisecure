@@ -8,13 +8,16 @@ from domain.exceptions.missing_consent_patient_exception import MissingConsentPa
 from domain.exceptions.missing_field__exception import MissingFieldException
 from domain.exceptions.missing_guardian_consent_exception import MissingGuardianConsentException
 from domain.exceptions.patient_already_exist_exception import PatientAlreadyExistsException
+from infrastructure.adapter.secondary.fixed_id_generator import FixedIDGenerator
 from infrastructure.adapter.secondary.in_memory_patient_repository import InMemoryPatientRepository
 
 
 class TestCreatePatientFolderUseCase:
     def setup_method(self):
         self.repository = InMemoryPatientRepository()
-        self.usecase = CreatePatientFolderUseCase(self.repository)
+        self.id_generator = FixedIDGenerator()
+
+        self.usecase = CreatePatientFolderUseCase(self.repository, self.id_generator)
         self.payload : PatientDataPaylod = {
                 "firstname": "John",
                 "lastname": "Doe",
@@ -29,7 +32,7 @@ class TestCreatePatientFolderUseCase:
 
     def test_should_fail_if_patient_already_exists(self):
 
-        self.repository.create(Patient(**self.payload))
+        self.repository.create(Patient(id= "1", **self.payload))
 
         with pytest.raises(PatientAlreadyExistsException, match=f"Patient already exists with email john.doe@example.com"):
             self.usecase.execute(self.payload)
@@ -55,3 +58,11 @@ class TestCreatePatientFolderUseCase:
 
         with pytest.raises(MissingGuardianConsentException, match= f"Unable to create folder without guardian consent for minor"):
             self.usecase.execute(minor_patient)
+
+    def test_should_create_patient_folder(self):
+        id =self.usecase.execute(self.payload)
+
+        fetched_patient = self.repository.find_by_id(id)
+
+        assert fetched_patient is not None
+        assert fetched_patient.firstname == self.payload["firstname"]

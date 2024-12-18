@@ -14,3 +14,9 @@ class InMemoryPatientRepository(PatientRepositoryProtocol):
             if patient.email == email:
                 return patient
         return None
+    
+    def find_by_id(self, id: str) -> Patient | None:
+        for patient in self.patients:
+            if patient.id == id:
+                return patient
+        return None
