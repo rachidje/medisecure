@@ -5,11 +5,13 @@ from pydantic import ValidationError
 from patient_management.domain.entities.patient import Patient
 from patient_management.domain.exceptions.missing_field__exception import MissingFieldException
 from patient_management.domain.exceptions.patient_already_exist_exception import PatientAlreadyExistsException
-from patient_management.domain.ports.id_generator_protocol import IDGeneratorProtocol
+from shared.domain.entities.user import User
+from shared.ports.secondary.id_generator_protocol import IDGeneratorProtocol
 from patient_management.domain.ports.patient_repository_protocol import PatientRepositoryProtocol
 from patient_management.domain.services.patient_service import PatientService
 
 class PatientDataPayload(TypedDict):
+    medical_professional: User
     firstname: str
     lastname: str
     email: str
@@ -31,7 +33,11 @@ class CreatePatientFolderUseCase:
         patient_id = self.id_generator.generate()
         
         try:
-            patient = Patient(id=patient_id, **payload)
+            patient = Patient.model_validate({
+                "id": patient_id,
+                "created_by": payload["medical_professional"].id,
+                **payload
+            })
         except ValidationError as e:
             raise MissingFieldException(str(e.errors()[0]['loc'][0]))
         

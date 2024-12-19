@@ -10,6 +10,7 @@ class Patient(BaseModel):
     date_of_birth: date
     consent: bool
     guardian_consent: bool
+    created_by: str
 
     @property
     def age(self):

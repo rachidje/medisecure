@@ -8,7 +8,8 @@ from patient_management.domain.exceptions.missing_consent_patient_exception impo
 from patient_management.domain.exceptions.missing_field__exception import MissingFieldException
 from patient_management.domain.exceptions.missing_guardian_consent_exception import MissingGuardianConsentException
 from patient_management.domain.exceptions.patient_already_exist_exception import PatientAlreadyExistsException
-from patient_management.infrastructure.adapter.secondary.fixed_id_generator import FixedIDGenerator
+from patient_management.tests.unit.seeds.unit_users import UnittestUsers
+from shared.adapters.secondary.fixed_id_generator import FixedIDGenerator
 from patient_management.infrastructure.adapter.secondary.in_memory_patient_repository import InMemoryPatientRepository
 from patient_management.tests.unit.seeds.unit_patients import UnittestPatients
 
@@ -26,7 +27,15 @@ class TestCreatePatientFolderUseCase:
 
     def test_should_fail_if_patient_already_exists(self):
 
-        self.repository.create(Patient(id= "1", **UnittestPatients.john_doe))
+        self.repository.create(Patient(
+            id= "1", 
+            firstname= UnittestPatients.john_doe["firstname"],
+            lastname= UnittestPatients.john_doe["lastname"],
+            email= UnittestPatients.john_doe["email"],
+            date_of_birth= UnittestPatients.john_doe["date_of_birth"],
+            consent= UnittestPatients.john_doe["consent"],
+            guardian_consent= UnittestPatients.john_doe["guardian_consent"],
+            created_by= UnittestUsers.medical_professional.id))
 
         with pytest.raises(PatientAlreadyExistsException, match=f"Patient already exists with email john.doe@example.com"):
             self.usecase.execute(UnittestPatients.john_doe)
@@ -37,6 +46,9 @@ class TestCreatePatientFolderUseCase:
                 "firstname": "John",
                 "lastname": "Doe",
                 "email": "john.doe@example.com",
+                "consent": True,
+                "guardian_consent": True,
+                "medical_professional": UnittestUsers.medical_professional
             })
 
     def test_should_fail_if_no_consent_patient(self):
