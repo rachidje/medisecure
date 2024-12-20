@@ -21,12 +21,12 @@ class PatientDataPayload(TypedDict):
 
 
 class CreatePatientFolderUseCase:
-    def __init__(self, repository: PatientRepositoryProtocol, id_generator: IDGeneratorProtocol):
-        self.repository = repository
+    def __init__(self, patient_repository: PatientRepositoryProtocol, id_generator: IDGeneratorProtocol):
+        self.patient_repository = patient_repository
         self.id_generator = id_generator
 
     def execute(self, payload: PatientDataPayload):
-        existing_patient = self.repository.find_by_email(payload["email"])
+        existing_patient = self.patient_repository.find_by_email(payload["email"])
         if existing_patient:
             raise PatientAlreadyExistsException(existing_patient.email)
         
@@ -44,6 +44,6 @@ class CreatePatientFolderUseCase:
         PatientService.validate_consent(patient)
         PatientService.validate_guardian_consent(patient)
         
-        self.repository.create(patient)
+        self.patient_repository.create(patient)
         return patient_id
 

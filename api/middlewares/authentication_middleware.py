@@ -1,14 +1,16 @@
-from fastapi import HTTPException, Request
-from shared.adapters.secondary.in_memory_user_repository import InMemoryUserRepository
+from fastapi import Depends, HTTPException, Request
+from dependency_injector.wiring import inject, Provide
+from shared.container.container import Container
 from shared.domain.entities.user import User
-from shared.services.authenticator.basic_authenticator import BasicAuthenticator
+from shared.ports.secondary.authenticator_protocol import AuthenticatorProtocol
 from shared.services.authenticator.extract_token import AuthenticatorUtility
 
 
-user_repository = InMemoryUserRepository()
-authenticator = BasicAuthenticator(user_repository)
-
-async def authentication_middleware(request: Request) -> User:
+@inject
+async def authentication_middleware(
+    request: Request,
+    authenticator: AuthenticatorProtocol = Depends(Provide[Container.authenticator])
+    ) -> User:
     credentials = request.headers.get("Authorization")
 
     if not credentials:
