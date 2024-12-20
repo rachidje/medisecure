@@ -7,6 +7,8 @@ class E2eUsers:
     doctor = UserFixture(
         User(
             id = "doctor",
+            firstname = "Doctor",
+            lastname = "Doe",
             email = "doctor@gmail.com",
             password = "doctor",
             roles = [Role.DOCTOR]
@@ -16,6 +18,8 @@ class E2eUsers:
     lab_technician_unauthorized = UserFixture(
         User(
             id = "lab_technician_unauthorized",
+            firstname = "Lab",
+            lastname = "Technician",
             email = "lab_technician_unauthorized@gmail.com",
             password = "lab_technician_unauthorized",
             roles = [Role.LAB_TECHNICIAN]

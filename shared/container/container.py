@@ -3,8 +3,8 @@ from dependency_injector import providers, containers
 from patient_management.application.usecases.create_patient_folder_usecase import CreatePatientFolderUseCase
 from patient_management.infrastructure.adapter.primary.controllers.patient_controller import PatientController
 from patient_management.infrastructure.adapter.secondary.mysql.mysql_patient_repository import MySQLPatientRepository
-from shared.adapters.secondary.in_memory_user_repository import InMemoryUserRepository
 from shared.adapters.secondary.mysql_db.connection import get_session
+from shared.adapters.secondary.mysql_db.mysql_user_repository import MySQLUserRepository
 from shared.adapters.secondary.uuid_generator import UUIDGenerator
 from shared.services.authenticator.basic_authenticator import BasicAuthenticator
 
@@ -17,7 +17,10 @@ class Container(containers.DeclarativeContainer):
         MySQLPatientRepository,
         session=session
     )
-    user_repository = providers.Singleton(InMemoryUserRepository)
+    user_repository = providers.Singleton(
+        MySQLUserRepository,
+        session=session
+    )
     id_generator = providers.Singleton(UUIDGenerator)
 
     # 📦 Application

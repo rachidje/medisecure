@@ -6,9 +6,9 @@ from patient_management.tests.unit.seeds.unit_users import UnittestUsers
 
 class UnittestPatients:
     john_doe: PatientDataPayload = {
-        "firstname": "John",
-        "lastname": "Doe",
-        "email": "john.doe@example.com",
+        "firstname": "Alice",
+        "lastname": "Bowman",
+        "email": "alice.bowman@example.com",
         "date_of_birth": date(1990, 1, 1),
         "consent": True,
         "guardian_consent": True,
