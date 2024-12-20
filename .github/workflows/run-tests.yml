@@ -1,0 +1,35 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main  # Lance les tests sur la branche 'main'
+      - develop  # Lance les tests sur la branche 'develop'
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest  # Exécute l'action sur un environnement Linux
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3  # Clone le repo
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'  # La version de Python à utiliser
+
+    - name: Install dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt  # Installe les dépendances listées dans requirements.txt
+
+    - name: Run tests
+      run: |
+        source venv/bin/activate
+        pytest --junitxml=reports/results.xml  # Exécute tous les tests
