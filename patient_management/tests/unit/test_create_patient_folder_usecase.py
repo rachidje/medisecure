@@ -72,3 +72,5 @@ class TestCreatePatientFolderUseCase:
 
         assert fetched_patient is not None
         assert fetched_patient.firstname == UnittestPatients.alice["firstname"]
+
+# test
