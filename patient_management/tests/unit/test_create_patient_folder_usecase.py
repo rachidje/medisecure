@@ -29,16 +29,16 @@ class TestCreatePatientFolderUseCase:
 
         self.repository.create(Patient(
             id= "1", 
-            firstname= UnittestPatients.john_doe["firstname"],
-            lastname= UnittestPatients.john_doe["lastname"],
-            email= UnittestPatients.john_doe["email"],
-            date_of_birth= UnittestPatients.john_doe["date_of_birth"],
-            consent= UnittestPatients.john_doe["consent"],
-            guardian_consent= UnittestPatients.john_doe["guardian_consent"],
+            firstname= UnittestPatients.alice["firstname"],
+            lastname= UnittestPatients.alice["lastname"],
+            email= UnittestPatients.alice["email"],
+            date_of_birth= UnittestPatients.alice["date_of_birth"],
+            consent= UnittestPatients.alice["consent"],
+            guardian_consent= UnittestPatients.alice["guardian_consent"],
             created_by= UnittestUsers.medical_professional.id))
 
-        with pytest.raises(PatientAlreadyExistsException, match=f"Patient already exists with email john.doe@example.com"):
-            self.usecase.execute(UnittestPatients.john_doe)
+        with pytest.raises(PatientAlreadyExistsException, match=f"Patient already exists with email {UnittestPatients.alice['email']}"):
+            self.usecase.execute(UnittestPatients.alice)
 
     def test_should_fail_if_missing_fields(self):
         with pytest.raises(MissingFieldException, match= f"Missing required field: date_of_birth"):
@@ -52,13 +52,13 @@ class TestCreatePatientFolderUseCase:
             })
 
     def test_should_fail_if_no_consent_patient(self):
-        non_consented_patient = UnittestPatients.john_doe.copy()
+        non_consented_patient = UnittestPatients.alice.copy()
         non_consented_patient["consent"] = False
         with pytest.raises(MissingConsentPatientException, match= f"Unable to create folder without consent patient"):
             self.usecase.execute(non_consented_patient)
 
     def test_should_fail_if_no_guardian_consent_for_minor(self):
-        minor_patient = UnittestPatients.john_doe.copy()
+        minor_patient = UnittestPatients.alice.copy()
         minor_patient["date_of_birth"] = date(2010, 1, 1)
         minor_patient["guardian_consent"] = False
 
@@ -66,9 +66,9 @@ class TestCreatePatientFolderUseCase:
             self.usecase.execute(minor_patient)
 
     def test_should_create_patient_folder(self):
-        id =self.usecase.execute(UnittestPatients.john_doe)
+        id =self.usecase.execute(UnittestPatients.alice)
 
         fetched_patient = self.repository.find_by_id(id)
 
         assert fetched_patient is not None
-        assert fetched_patient.firstname == UnittestPatients.john_doe["firstname"]
+        assert fetched_patient.firstname == UnittestPatients.alice["firstname"]

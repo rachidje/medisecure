@@ -5,7 +5,7 @@ from patient_management.tests.unit.seeds.unit_users import UnittestUsers
 
 
 class UnittestPatients:
-    john_doe: PatientDataPayload = {
+    alice: PatientDataPayload = {
         "firstname": "Alice",
         "lastname": "Bowman",
         "email": "alice.bowman@example.com",
