@@ -10,8 +10,12 @@ certifi==2024.12.14
     # via
     #   httpcore
     #   httpx
+cffi==1.17.1
+    # via cryptography
 coverage==7.6.9
     # via pytest-cov
+cryptography==44.0.0
+    # via medisecure-api (pyproject.toml)
 dependency-injector==4.44.0
     # via medisecure-api (pyproject.toml)
 dnspython==2.7.0
@@ -37,12 +41,16 @@ packaging==24.2
     # via pytest
 pluggy==1.5.0
     # via pytest
+pycparser==2.22
+    # via cffi
 pydantic==2.10.3
     # via
     #   medisecure-api (pyproject.toml)
     #   fastapi
 pydantic-core==2.27.1
     # via pydantic
+pymysql==1.1.1
+    # via medisecure-api (pyproject.toml)
 pytest==8.3.4
     # via
     #   medisecure-api (pyproject.toml)
@@ -52,10 +60,14 @@ pytest-asyncio==0.25.0
     # via medisecure-api (pyproject.toml)
 pytest-cov==6.0.0
     # via medisecure-api (pyproject.toml)
+python-dotenv==1.0.1
+    # via medisecure-api (pyproject.toml)
 six==1.17.0
     # via dependency-injector
 sniffio==1.3.1
     # via anyio
+sqlalchemy==2.0.36
+    # via medisecure-api (pyproject.toml)
 starlette==0.41.3
     # via fastapi
 typing-extensions==4.12.2
@@ -64,3 +76,4 @@ typing-extensions==4.12.2
     #   fastapi
     #   pydantic
     #   pydantic-core
+    #   sqlalchemy
