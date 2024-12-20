@@ -15,7 +15,7 @@ class TestE2ECreatePatientFolderUseCase:
 
         self.test_app.load_fixtures([
             E2eUsers.doctor, 
-            E2eUsers.lab_technician_unauthorized
+            E2eUsers.lab_technician_unauthorized,
             ])
 
         self.payload= PatientDTO.model_validate({

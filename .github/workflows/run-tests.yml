@@ -13,6 +13,18 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest  # Exécute l'action sur un environnement Linux
+
+    services:
+      mysql:
+        image: mysql:8.0.31
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: medisecure
+          MYSQL_USER: admin
+          MYSQL_PASSWORD: admin
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     
     steps:
     - name: Checkout code
@@ -30,7 +42,13 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Setup MySQL
+      run: |
+        mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS medisecure;"
+
     - name: Run tests
+      env:
+        DB_URL: mysql+pymysql://admin:admin@127.0.0.1:3306/medisecure
       run: |
         source venv/bin/activate
         pytest --cov --cov-report=xml
