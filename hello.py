@@ -1,5 +1,5 @@
 def main():
-    print("Hello from medisecure-api!")
+    print(f"Hello from medisecure-api!")
 
 
 if __name__ == "__main__":

@@ -33,4 +33,4 @@ jobs:
     - name: Run tests
       run: |
         source venv/bin/activate
-        pytest --junitxml=reports/results.xml  # Exécute tous les tests
+        pytest -vv
