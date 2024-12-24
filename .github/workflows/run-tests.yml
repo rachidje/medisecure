@@ -1,0 +1,80 @@
+name: Run Tests
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0.31
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: medisecure
+          MYSQL_USER: admin
+          MYSQL_PASSWORD: admin
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies for PyQt6
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libegl1 libglib2.0-0 libx11-xcb1 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libgl1-mesa-glx libgl1-mesa-dri
+
+    - name: Install Xvfb
+      run: |
+        sudo apt-get install -y xvfb x11-utils x11-xserver-utils mesa-utils
+
+    - name: Start Xvfb
+      run: |
+        export DISPLAY=:99
+        Xvfb :99 -ac -screen 0 1920x1080x24 -nolisten tcp > /tmp/Xvfb.log 2>&1 &
+
+    - name: Check Xvfb Logs
+      run: |
+        cat /tmp/Xvfb.log || echo "No Xvfb log found"
+
+    - name: Install Python dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Setup MySQL
+      run: |
+        mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS medisecure;"
+
+    - name: Run tests
+      env:
+        DISPLAY: ":99"
+        DB_URL: mysql+pymysql://admin:admin@127.0.0.1:3306/medisecure
+      run: |
+        source venv/bin/activate
+        xvfb-run `which coverage` run -m pytest -vm gui --cov --cov-report=xml
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        files: ./coverage.xml
+        working-directory: ./
+        token: ${{ secrets.CODECOV_TOKEN }}
