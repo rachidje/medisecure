@@ -11,6 +11,14 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Restore Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: venv
+        key: venv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          venv-${{ runner.os }}
+
     - name: Run tests
       env:
         DISPLAY: ":99.0"

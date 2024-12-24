@@ -16,6 +16,14 @@ jobs:
       with:
         python-version: '3.12'
 
+    - name: Cache Python dependencies
+      uses: actions/cache@v3
+      with:
+        path: venv
+        key: venv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+        restore-keys: |
+          venv-${{ runner.os }}
+
     - name: Install Python dependencies
       run: |
         python -m venv venv
