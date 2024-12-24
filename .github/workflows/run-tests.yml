@@ -35,10 +35,10 @@ jobs:
       with:
         python-version: '3.12'  # La version de Python à utiliser
 
-    - name: Install system dependencies for PyQt5
+    - name: Install dependencies for PyQt6
       run: |
         sudo apt-get update
-        sudo apt-get install -y libegl1 libglib2.0-0 libx11-xcb1 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0
+        sudo apt-get install -y libegl1 libglib2.0-0 libx11-xcb1 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxkbcommon-x11-0 libgl1-mesa-glx libgl1-mesa-dri
 
     - name: Install dependencies
       run: |
@@ -53,6 +53,11 @@ jobs:
 
     - name: Install Xvfb
       run: sudo apt-get install -y xvfb
+
+    - name: Start Xvfb
+      run: |
+        export DISPLAY=:99
+        Xvfb :99 -screen 0 1920x1080x24 &
 
     - name: Run tests
       env:
