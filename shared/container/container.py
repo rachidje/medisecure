@@ -11,7 +11,6 @@ from shared.services.authenticator.basic_authenticator import BasicAuthenticator
 class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
 
-    # 📦 Infrastructure
     session = providers.Singleton(get_session)
     patient_repository = providers.Singleton(
         MySQLPatientRepository,

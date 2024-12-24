@@ -12,6 +12,8 @@ certifi==2024.12.14
     #   httpx
 cffi==1.17.1
     # via cryptography
+colorama==0.4.6
+    # via pytest-watch
 coverage==7.6.9
     # via pytest-cov
 cryptography==44.0.0
@@ -20,6 +22,8 @@ dependency-injector==4.44.0
     # via medisecure-api (pyproject.toml)
 dnspython==2.7.0
     # via email-validator
+docopt==0.6.2
+    # via pytest-watch
 email-validator==2.2.0
     # via medisecure-api (pyproject.toml)
 fastapi==0.115.6
@@ -37,10 +41,16 @@ idna==3.10
     #   httpx
 iniconfig==2.0.0
     # via pytest
+mypy==1.14.0
+    # via medisecure-api (pyproject.toml)
+mypy-extensions==1.0.0
+    # via mypy
 packaging==24.2
     # via pytest
 pluggy==1.5.0
-    # via pytest
+    # via
+    #   pytest
+    #   pytest-qt
 pycparser==2.22
     # via cffi
 pydantic==2.10.3
@@ -51,14 +61,26 @@ pydantic-core==2.27.1
     # via pydantic
 pymysql==1.1.1
     # via medisecure-api (pyproject.toml)
+pyqt6==6.8.0
+    # via medisecure-api (pyproject.toml)
+pyqt6-qt6==6.8.1
+    # via pyqt6
+pyqt6-sip==13.9.1
+    # via pyqt6
 pytest==8.3.4
     # via
     #   medisecure-api (pyproject.toml)
     #   pytest-asyncio
     #   pytest-cov
+    #   pytest-qt
+    #   pytest-watch
 pytest-asyncio==0.25.0
     # via medisecure-api (pyproject.toml)
 pytest-cov==6.0.0
+    # via medisecure-api (pyproject.toml)
+pytest-qt==4.4.0
+    # via medisecure-api (pyproject.toml)
+pytest-watch==4.2.0
     # via medisecure-api (pyproject.toml)
 python-dotenv==1.0.1
     # via medisecure-api (pyproject.toml)
@@ -74,6 +96,9 @@ typing-extensions==4.12.2
     # via
     #   anyio
     #   fastapi
+    #   mypy
     #   pydantic
     #   pydantic-core
     #   sqlalchemy
+watchdog==6.0.0
+    # via pytest-watch

@@ -16,5 +16,6 @@ class UserModel(Base):
     email:             Mapped[str] = mapped_column(String(500), nullable=False)
     password:          Mapped[str] = mapped_column(String(500), nullable=False)
     roles:             Mapped[list[Role]] = mapped_column(JSON, nullable=False, default=[])
+    
 
 Base.metadata.create_all(engine)
