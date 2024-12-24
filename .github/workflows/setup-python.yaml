@@ -10,11 +10,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3  # Clone le dépôt
-        
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.12'
+
+      - name: Cache venv
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/venv
+          key: venv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            venv-${{ runner.os }}
 
       - name: Install dependencies
         run: |
