@@ -46,8 +46,8 @@ jobs:
 
     - name: Start Xvfb
       run: |
-        Xvfb :99 -ac -screen 0 1920x1080x24 -nolisten tcp -logfile /tmp/Xvfb.log &
         export DISPLAY=:99
+        Xvfb :99 -ac -screen 0 1920x1080x24 -nolisten tcp > /tmp/Xvfb.log 2>&1 &
 
     - name: Check Xvfb Logs
       run: |
@@ -60,6 +60,11 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
 
+    - name: Verify pytest installation
+      run: |
+        source venv/bin/activate
+        which pytest
+
     - name: Setup MySQL
       run: |
         mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS medisecure;"
@@ -69,6 +74,7 @@ jobs:
         DISPLAY: ":99"
         DB_URL: mysql+pymysql://admin:admin@127.0.0.1:3306/medisecure
       run: |
+        source venv/bin/activate
         pytest -m gui --cov --cov-report=xml
 
     - name: Upload coverage reports to Codecov
