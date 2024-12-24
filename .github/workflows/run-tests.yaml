@@ -1,28 +1,24 @@
-name: Run Tests
-
-on:
-  workflow_call:
-
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+
+    container:
+      image: cirrusci/flutter:latest  # Image contenant les bibliothèques graphiques nécessaires
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Restore Python dependencies
-      uses: actions/cache@v3
-      with:
-        path: venv
-        key: venv-${{ runner.os }}-${{ hashFiles('requirements.txt') }}
-        restore-keys: |
-          venv-${{ runner.os }}
+    - name: Install Python dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install --upgrade pip
+        pip install -r requirements.txt
 
     - name: Run tests
       env:
         DISPLAY: ":99.0"
         DB_URL: mysql+pymysql://admin:admin@127.0.0.1:3306/medisecure
       run: |
-        source venv/bin/activate
         xvfb-run python -m pytest -v --cov --cov-report=xml
