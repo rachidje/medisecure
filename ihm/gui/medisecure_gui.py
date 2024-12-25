@@ -19,8 +19,20 @@ class MedisecureApp(Ui_MainWindow, QMainWindow):
     def on_create_folder(self):
         self.create_folder()
 
+    def are_all_fields_filled(self):
+        fields = [
+            self.firstname_input,
+            self.lastname_input,
+            self.email_input,
+        ]
+        return all(field.text() != "" for field in fields)
+
     @inject
     def create_folder(self, controller: PatientController = Provide[Container.patient_controller]):
+        if not self.are_all_fields_filled():
+            QMessageBox.warning(self, "Medisecure - Error", "Please fill all fields")
+            return
+
         try:
             id = controller.create({
                 "firstname": self.firstname_input.text(),
