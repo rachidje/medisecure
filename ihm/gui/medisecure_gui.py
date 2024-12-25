@@ -1,3 +1,4 @@
+from datetime import date
 from PyQt6.QtWidgets import QMainWindow, QMessageBox
 from dependency_injector.wiring import inject, Provide
 
@@ -23,7 +24,7 @@ class MedisecureApp(Ui_MainWindow, QMainWindow):
         firstname = self.firstname_input.text()
         lastname = self.lastname_input.text()
         email = self.email_input.text()
-        date_of_birth = self.date_of_birth_input.date().toString("yyyy-MM-dd")
+        date_of_birth = date.fromisoformat(self.date_of_birth_input.date().toString("yyyy-MM-dd"))
         consent = self.consent_checkbox.isChecked()
         guardian_consent = self.guardian_consent_checkbox.isChecked()
 
