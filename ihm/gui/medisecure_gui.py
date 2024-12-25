@@ -21,21 +21,14 @@ class MedisecureApp(Ui_MainWindow, QMainWindow):
 
     @inject
     def create_folder(self, controller: PatientController = Provide[Container.patient_controller]):
-        firstname = self.firstname_input.text()
-        lastname = self.lastname_input.text()
-        email = self.email_input.text()
-        date_of_birth = date.fromisoformat(self.date_of_birth_input.date().toString("yyyy-MM-dd"))
-        consent = self.consent_checkbox.isChecked()
-        guardian_consent = self.guardian_consent_checkbox.isChecked()
-
         try:
             id = controller.create({
-                "firstname": firstname,
-                "lastname": lastname,
-                "email": email,
-                "date_of_birth": date_of_birth,
-                "consent": consent,
-                "guardian_consent": guardian_consent,
+                "firstname": self.firstname_input.text(),
+                "lastname": self.lastname_input.text(),
+                "email": self.email_input.text(),
+                "date_of_birth": date.fromisoformat(self.date_of_birth_input.date().toString("yyyy-MM-dd")),
+                "consent": self.consent_checkbox.isChecked(),
+                "guardian_consent": self.guardian_consent_checkbox.isChecked(),
                 "medical_professional": User(id="1", firstname="John", lastname="Doe", email="john.doe@example.com", password="qwerty", roles=[Role.DOCTOR])
             })
 

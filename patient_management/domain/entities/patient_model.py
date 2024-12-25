@@ -1,10 +1,11 @@
 from datetime import date
+from typing import Any
 from sqlalchemy import Boolean, Date, String
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column
 
 from shared.adapters.secondary.mysql_db.connection import get_engine
 
-Base = declarative_base()
+Base: Any = declarative_base()
 engine = get_engine()
 
 class PatientModel(Base):

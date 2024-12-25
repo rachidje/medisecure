@@ -1,10 +1,11 @@
+from typing import Any
 from sqlalchemy.orm import declarative_base, Mapped, mapped_column
 from sqlalchemy import JSON, String
 
 from shared.adapters.secondary.mysql_db.connection import get_engine
 from shared.domain.enum.roles_enum import Role
 
-Base = declarative_base()
+Base: Any = declarative_base()
 engine = get_engine()
 
 class UserModel(Base):
