@@ -20,7 +20,6 @@ class MedisecureApp(Ui_MainWindow, QMainWindow):
 
     @inject
     def create_folder(self, controller: PatientController = Provide[Container.patient_controller]):
-        print(controller)
         firstname = self.firstname_input.text()
         lastname = self.lastname_input.text()
         email = self.email_input.text()
@@ -28,14 +27,17 @@ class MedisecureApp(Ui_MainWindow, QMainWindow):
         consent = self.consent_checkbox.isChecked()
         guardian_consent = self.guardian_consent_checkbox.isChecked()
 
-        id = controller.create({
-            "firstname": firstname,
-            "lastname": lastname,
-            "email": email,
-            "date_of_birth": date_of_birth,
-            "consent": consent,
-            "guardian_consent": guardian_consent,
-            "medical_professional": User(id="1", firstname="John", lastname="Doe", email="john.doe@example.com", password="qwerty", roles=[Role.DOCTOR])
-        })
+        try:
+            id = controller.create({
+                "firstname": firstname,
+                "lastname": lastname,
+                "email": email,
+                "date_of_birth": date_of_birth,
+                "consent": consent,
+                "guardian_consent": guardian_consent,
+                "medical_professional": User(id="1", firstname="John", lastname="Doe", email="john.doe@example.com", password="qwerty", roles=[Role.DOCTOR])
+            })
 
-        QMessageBox.information(self, "Medisecure", f"Created folder with ID: {id}")
+            QMessageBox.information(self, "Medisecure", f"Created folder with ID: {id}")
+        except Exception as e:
+            QMessageBox.warning(self, "Medisecure - Error", str(e))

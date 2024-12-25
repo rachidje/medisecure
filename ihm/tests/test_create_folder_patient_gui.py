@@ -63,3 +63,21 @@ class TestCreateFolderPatientGui:
             assert message_text.startswith("Created folder with ID: ")
             generated_id = message_text.split(": ")[1]  # Extraire l'ID
             assert isinstance(generated_id, str)  # Vérifier que l'ID est une chaîne
+
+    def test_should_display_warning_box_if_consent_patient_is_not_checked(self):
+        self.test_gui.gui.firstname_input.setText("John")
+        self.test_gui.gui.lastname_input.setText("Doe")
+        self.test_gui.gui.email_input.setText("john.doe@example.com")
+        self.test_gui.gui.date_of_birth_input.setDate(date(1990, 1, 1))
+        self.test_gui.gui.consent_checkbox.setChecked(False)
+        self.test_gui.gui.guardian_consent_checkbox.setChecked(False)
+
+        with patch.object(QMessageBox, "warning", return_value=None) as mock_warning:
+            self.test_gui.gui.create_folder()
+
+            # Vérifier que la méthode QMessageBox.warning a été appelée
+            mock_warning.assert_called_once()
+
+            called_args = mock_warning.call_args[0]  # Récupère les arguments passés à la méthode
+            
+            assert "Unable to create folder without consent patient" in called_args[2]  # Texte du message
