@@ -66,3 +66,17 @@ class TestCreateFolderPatientGui:
             
             assert "Unable to create folder without consent patient" in called_args[2]  # Texte du message
 
+    def test_should_display_warning_box_if_all_fields_are_empty(self):
+        self.fill_form()
+        self.test_gui.gui.firstname_input.setText("")
+        self.test_gui.gui.lastname_input.setText("")
+        self.test_gui.gui.email_input.setText("")
+
+        with patch.object(QMessageBox, "warning", return_value=None) as mock_warning:
+            self.test_gui.gui.create_folder()
+
+            mock_warning.assert_called_once()
+            called_args = mock_warning.call_args[0]  # Récupère les arguments passés à la méthode
+            
+            assert "Please fill all fields" in called_args[2]  # Texte du message
+
