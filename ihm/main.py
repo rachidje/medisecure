@@ -1,25 +1,15 @@
-import sys
+from PyQt6.QtWidgets import QApplication, QMainWindow
 from pathlib import Path
-
-# Ajouter le répertoire racine au sys.path
+import sys
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-
-from PyQt6.QtWidgets import QApplication
-from ihm.gui.medisecure_gui import MedisecureApp
-from shared.container.container import Container
+from ihm.core.medisecure_main_window import MedisecureMainWindow
 
 if __name__ == "__main__":
-    container = Container()
-
-    container.wire(
-        modules=[
-            "ihm.gui.medisecure_gui"
-        ]
-    )
-
-    app = QApplication(sys.argv)
-    gui = MedisecureApp()
-
-    gui.show()
+    
+    app = QApplication([])
+    main_window = QMainWindow()
+    ui = MedisecureMainWindow()
+    ui.setupUi(main_window)
+    main_window.show()
     sys.exit(app.exec())

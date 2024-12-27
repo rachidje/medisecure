@@ -2,7 +2,8 @@ from PyQt6.QtWidgets import QApplication
 from sqlalchemy.orm import Session
 import sys
 
-from ihm.gui.medisecure_gui import MedisecureApp
+
+from ihm.core.medisecure_main_window import MedisecureMainWindow
 from patient_management.domain.entities.patient_model import PatientModel
 from shared.adapters.secondary.mysql_db.connection import get_session
 from shared.container.container import Container
@@ -12,7 +13,7 @@ from shared.tests.fixtures.fixture_protocol import FixtureProtocol
 
 class TestGui:
     _app: QApplication
-    _gui: MedisecureApp
+    _gui: MedisecureMainWindow
     _container: Container
     _session: Session
 
@@ -31,7 +32,7 @@ class TestGui:
             "ihm.gui.medisecure_gui"
         ])
 
-        self._gui = MedisecureApp()
+        self._gui = MedisecureMainWindow()
 
     def load_fixtures(self, fixtures: list[FixtureProtocol]):
         for fixture in fixtures:
