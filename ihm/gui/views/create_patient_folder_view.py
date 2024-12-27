@@ -1,4 +1,6 @@
 from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QVBoxLayout
+
 from ihm.gui.generated.base_create_patient_folder_view import Ui_Form
 
 
