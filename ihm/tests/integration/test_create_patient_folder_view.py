@@ -10,7 +10,7 @@ from ihm.tests.utils.test_gui import TestGui
 
 @pytest.mark.gui
 class TestCreatePatientFolderView:
-    _test_gui = TestGui
+    _test_gui: TestGui
     _view: CreatePatientFolderView
 
     def setup_method(self):

@@ -46,7 +46,7 @@ class TestGui:
     
     def teardown(self):
         if QApplication.instance():
-            QApplication.instance().quit()
+            QApplication.instance().quit() # type: ignore
 
     def load_fixtures(self, fixtures: list[FixtureProtocol]):
         for fixture in fixtures:
