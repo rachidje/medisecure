@@ -43,6 +43,10 @@ class TestGui:
         view = view_class()
         view.setupUi(view)
         return view
+    
+    def teardown(self):
+        if QApplication.instance():
+            QApplication.instance().quit()
 
     def load_fixtures(self, fixtures: list[FixtureProtocol]):
         for fixture in fixtures:
