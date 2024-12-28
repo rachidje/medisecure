@@ -65,3 +65,21 @@ class TestCreatePatientFolderView:
             called_args = mock_warning.call_args[0]  # Récupère les arguments passés à la méthode
             
             assert "Unable to create folder without consent patient" in called_args[2]  # Texte du message
+
+    def test_should_display_information_box_with_ID_generated(self):
+        self._view.firstname_input.setText("John")
+        self._view.lastname_input.setText("Doe")
+        self._view.email_input.setText("john.doe@example.com")
+        self._view.date_of_birth_input.setDate(date(1990, 1, 1))
+        self._view.consent_checkbox.setChecked(True)
+        self._view.guardian_consent_checkbox.setChecked(False)
+
+        with patch.object(QMessageBox, "information", return_value=None) as mock_info:
+            self._view.create_folder()
+
+            mock_info.assert_called_once()
+            called_args = mock_info.call_args[0]  # Récupère les arguments passés à la méthode
+            message_text: str = called_args[2]  # Texte du message
+            assert message_text.startswith("Created folder with ID: ")
+            generated_id = message_text.split(": ")[1]  # Extraire l'ID
+            assert isinstance(generated_id, str)  # Vérifier que l'ID est une chaîne

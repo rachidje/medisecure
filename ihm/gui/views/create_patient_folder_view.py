@@ -27,7 +27,7 @@ class CreatePatientFolderView(QWidget, Ui_Form):
     @inject
     def create_folder(self, controller: PatientController = Provide[Container.patient_controller]):
         try:
-            controller.create({
+            id =controller.create({
                 "firstname": self.firstname_input.text(),
                 "lastname": self.lastname_input.text(),
                 "email": self.email_input.text(),
@@ -36,6 +36,7 @@ class CreatePatientFolderView(QWidget, Ui_Form):
                 "guardian_consent": self.guardian_consent_checkbox.isChecked(),
                 "medical_professional": E2eUsers.doctor.entity
             })
+            QMessageBox.information(self, "Medisecure", f"Created folder with ID: {id}")
         except Exception as e:
             QMessageBox.warning(self, "Medisecure - Error", str(e))
 
