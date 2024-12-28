@@ -21,6 +21,7 @@ class TestCreatePatientFolderView:
     def teardown_method(self):
         if self._test_gui:
             self._test_gui.teardown()
+        self._view = None # type: ignore
 
     def test_display_all_needed_fields(self):
         assert hasattr(self._view, "firstname_input")

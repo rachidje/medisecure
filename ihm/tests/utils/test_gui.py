@@ -12,7 +12,7 @@ from shared.tests.fixtures.fixture_protocol import FixtureProtocol
 
 
 class TestGui:
-    _app: QApplication
+    _app: QApplication | None
     _gui: MedisecureMainWindow
     _container: Container
     _session: Session
@@ -47,6 +47,7 @@ class TestGui:
     def teardown(self):
         if QApplication.instance():
             QApplication.instance().quit() # type: ignore
+        self._app = None
 
     def load_fixtures(self, fixtures: list[FixtureProtocol]):
         for fixture in fixtures:

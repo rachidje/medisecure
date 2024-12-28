@@ -59,7 +59,7 @@ jobs:
         DB_URL: mysql+pymysql://admin:admin@127.0.0.1:3306/medisecure
       run: |
         source venv/bin/activate
-        xvfb-run python -m pytest -v --cov --cov-report=xml
+        xvfb-run python -m pytest --disable-warnings --capture=no -v --cov --cov-report=xml
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
