@@ -29,10 +29,20 @@ class TestGui:
         self._session.commit()
 
         self._container.wire(modules=[
-            "ihm.gui.medisecure_gui"
+            "ihm.gui.views.create_patient_folder_view",
         ])
 
         self._gui = MedisecureMainWindow()
+
+    def initialize_view(self, view_class):
+        """
+        Instancie et configure une vue spécifique.
+        :param view_class: Classe de la vue à initialiser (par ex. CreatePatientFolderView).
+        :return: Instance configurée de la vue.
+        """
+        view = view_class()
+        view.setupUi(view)
+        return view
 
     def load_fixtures(self, fixtures: list[FixtureProtocol]):
         for fixture in fixtures:
