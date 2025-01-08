@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 
 class Patient(BaseModel):
+    # commentaire bidon
     id: str
     firstname: str
     lastname: str

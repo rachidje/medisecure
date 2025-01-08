@@ -60,3 +60,7 @@ class TestGui:
     @property
     def container(self):
         return self._container
+    
+    @property
+    def app(self):
+        return self._app
