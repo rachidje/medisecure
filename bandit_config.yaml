@@ -1,0 +1,9 @@
+# bandit_config.yaml
+exclude_dirs:
+  - tests
+  - migrations
+  - .venv
+skips:
+  - B101  # Ignorer les warnings liés aux assertions
+severity: LOW
+confidence: HIGH

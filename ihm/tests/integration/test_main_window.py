@@ -1,14 +1,14 @@
 import pytest
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget
-from PyQt6.QtTest import QTest
-from PyQt6.QtCore import Qt
 
 from ihm.gui.views.create_patient_folder_view import CreatePatientFolderView
 from ihm.core.medisecure_main_window import MedisecureMainWindow
 
 @pytest.fixture
 def app():
-    app = QApplication([])
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication([])
     yield app
     app.quit()
 

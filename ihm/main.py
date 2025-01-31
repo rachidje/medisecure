@@ -4,12 +4,14 @@ import sys
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
+from ihm.gui.views.connection_view import ConnectionView
 from shared.container.container import Container
 from ihm.core.medisecure_main_window import MedisecureMainWindow
 
 if __name__ == "__main__":
     
     app = QApplication([])
+
     main_window = QMainWindow()
     ui = MedisecureMainWindow()
     ui.setupUi(main_window)
