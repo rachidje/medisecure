@@ -9,6 +9,7 @@ from shared.tests.test_app import TestApp
 @pytest.mark.e2e
 @pytest.mark.asyncio
 class TestE2ECreatePatientFolderUseCase:
+    # pylint: disable=W0201
     def setup_method(self):
         self.test_app = TestApp()
         self.test_app.setup()

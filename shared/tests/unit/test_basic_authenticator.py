@@ -7,6 +7,7 @@ from shared.services.authenticator.basic_authenticator import BasicAuthenticator
 
 @pytest.mark.unittest
 class TestBasicAuthenticator:
+    # pylint: disable=W0201
     def setup_method(self):
         self.user_repository = InMemoryUserRepository()
         self.authenticator = BasicAuthenticator(self.user_repository)

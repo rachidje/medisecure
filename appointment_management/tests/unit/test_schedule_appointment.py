@@ -1,15 +1,20 @@
 from datetime import date, time
 import pytest
 
-from appointment_management.application.usecases.schedule_appointment import ScheduleAppointmentUseCase
+from appointment_management.application.usecases.schedule_appointment\
+    import ScheduleAppointmentUseCase
 from appointment_management.domain.entities.appointment import Appointment
-from appointment_management.domain.exceptions.not_available_professional_exception import NotAvailableProfessionalException
-from appointment_management.domain.exceptions.outside_opening_hours_exception import OutsideOpeningHoursException
-from appointment_management.infrastructure.adapter.in_memory_appointment_repository import InMemoryAppointmentRepository
+from appointment_management.domain.exceptions.not_available_professional_exception\
+    import NotAvailableProfessionalException
+from appointment_management.domain.exceptions.outside_opening_hours_exception\
+    import OutsideOpeningHoursException
+from appointment_management.infrastructure.adapter.in_memory_appointment_repository\
+    import InMemoryAppointmentRepository
 from shared.adapters.secondary.fixed_id_generator import FixedIDGenerator
 
 @pytest.mark.unittest
 class TestScheduleAppointment:
+    # pylint: disable=W0201
     def setup_method(self):
         self.appointment_repository = InMemoryAppointmentRepository()
         self.id_generator = FixedIDGenerator()

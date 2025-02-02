@@ -35,7 +35,7 @@ class TestApp:
     @property
     def app(self):
         return self._app
-    
+
     @property
     def container(self):
         return self._container

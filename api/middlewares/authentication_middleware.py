@@ -15,15 +15,15 @@ async def authentication_middleware(
 
     if not credentials:
         raise HTTPException(status_code=403, detail="Authentication credentials were not found")
-    
+
     token = AuthenticatorUtility.extract_token(credentials)
     if not token:
         raise HTTPException(status_code=403, detail="Invalid authentication credentials")
-    
+
     user = authenticator.authenticate(token)
 
     if not user:
         raise HTTPException(status_code=403, detail="Invalid authentication credentials")
-    
+
     request.state.user = user
     return user

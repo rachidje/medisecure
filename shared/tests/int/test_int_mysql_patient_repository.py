@@ -1,6 +1,7 @@
 import pytest
 
-from patient_management.infrastructure.adapter.secondary.mysql.mysql_patient_repository import MySQLPatientRepository
+from patient_management.infrastructure.adapter.secondary.mysql.mysql_patient_repository\
+    import MySQLPatientRepository
 from patient_management.tests.e2e.seeds.patient_seeds import E2ePatients
 from shared.adapters.secondary.mysql_db.connection import get_session
 from shared.tests.test_app import TestApp
@@ -8,6 +9,7 @@ from shared.tests.test_app import TestApp
 
 @pytest.mark.int
 class TestIntMySQLPatientRepository:
+    # pylint: disable=W0201
     def setup_method(self):
         self.test_app = TestApp()
         self.test_app.setup()

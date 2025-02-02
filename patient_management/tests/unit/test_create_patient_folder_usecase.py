@@ -16,6 +16,7 @@ from patient_management.tests.unit.seeds.unit_patients import UnittestPatients
 
 @pytest.mark.unittest
 class TestCreatePatientFolderUseCase:
+    # pylint: disable=W0201
     def setup_method(self):
         self.repository = InMemoryPatientRepository()
         self.id_generator = FixedIDGenerator()
