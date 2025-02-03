@@ -18,7 +18,10 @@ class AppointmentData(TypedDict):
     end_time: time
 
 class ScheduleAppointmentUseCase:
-    def __init__(self, appointment_repository: AppointmentRepositoryProtocol, id_generator: IDGeneratorProtocol):
+    def __init__(self, 
+                appointment_repository: AppointmentRepositoryProtocol, 
+                id_generator: IDGeneratorProtocol
+        ):
         self.appointment_repository = appointment_repository
         self.id_generator = id_generator
 

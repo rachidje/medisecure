@@ -62,6 +62,3 @@ class TestScheduleAppointment:
 
     def test_should_notify_patient_and_professional(self):
         ...
-
-    
-

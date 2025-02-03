@@ -17,7 +17,7 @@ class TestE2ECreatePatientFolderUseCase:
         self.test_app.load_fixtures([
             E2eUsers.doctor, 
             E2eUsers.lab_technician_unauthorized,
-            ])
+        ])
 
         self.payload= PatientDTO.model_validate({
             "firstname": "John",
@@ -29,7 +29,10 @@ class TestE2ECreatePatientFolderUseCase:
         })
 
     async def test_should_return_patient_id(self):
-        self.token = base64.b64encode(f"{E2eUsers.doctor.entity.email}:{E2eUsers.doctor.entity.password}".encode("utf-8")).decode("utf-8")
+        self.token = base64\
+                    .b64encode(f"{E2eUsers.doctor.entity.email}:{E2eUsers.doctor.entity.password}"\
+                                .encode("utf-8"))\
+                    .decode("utf-8")
         transport = ASGITransport(app= self.test_app.app)
 
         async with AsyncClient(transport= transport, base_url="http://test") as client:
@@ -43,7 +46,10 @@ class TestE2ECreatePatientFolderUseCase:
             assert isinstance(response.json()['id'], str )
         
     async def test_should_fail_with_unauthorized_role(self):
-        self.token = base64.b64encode(f"{E2eUsers.lab_technician_unauthorized.entity.email}:{E2eUsers.lab_technician_unauthorized.entity.password}".encode("utf-8")).decode("utf-8")
+        self.token = base64\
+                    .b64encode(f"{E2eUsers.lab_technician_unauthorized.entity.email}:{E2eUsers.lab_technician_unauthorized.entity.password}"\
+                            .encode("utf-8"))\
+                    .decode("utf-8")
 
         transport = ASGITransport(app= self.test_app.app)
 

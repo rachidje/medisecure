@@ -53,6 +53,9 @@ jobs:
       run: |
         mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS medisecure;"
 
+    - name: Run Pylint
+      run: pylint --rcfile=.pylintrc --fail-under=8.0 .
+
     - name: Run tests
       env:
         DISPLAY: ":99.0"

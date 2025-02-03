@@ -19,7 +19,7 @@ async def create_patient(
     data: PatientDTO, 
     user: User = Depends(authentication_middleware),
     controller: PatientController = Depends(Provide[Container.patient_controller])
-    ):
+):
     payload = PatientDataPayload(**data.model_dump(), medical_professional=user)
     patient_id = controller.create(payload)
     return JSONResponse({"id": patient_id}, 201)

@@ -1,4 +1,4 @@
 [MASTER]
 ignore=.venv,__pycache__
 [MESSAGES CONTROL]
-disable=C0114,C0116,C0115 # disable docstring
+disable=C0114,C0116,C0115,E0611,W0201,R0903 # disable docstring, pyqt import no name error, attribute defined outside, too few public methods

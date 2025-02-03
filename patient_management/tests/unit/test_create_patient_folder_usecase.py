@@ -2,15 +2,21 @@ from datetime import date
 from typing import Any
 import pytest
 
-from patient_management.application.usecases.create_patient_folder_usecase import CreatePatientFolderUseCase
+from patient_management.application.usecases.create_patient_folder_usecase\
+    import CreatePatientFolderUseCase
 from patient_management.domain.entities.patient import Patient
-from patient_management.domain.exceptions.missing_consent_patient_exception import MissingConsentPatientException
-from patient_management.domain.exceptions.missing_field__exception import MissingFieldException
-from patient_management.domain.exceptions.missing_guardian_consent_exception import MissingGuardianConsentException
-from patient_management.domain.exceptions.patient_already_exist_exception import PatientAlreadyExistsException
+from patient_management.domain.exceptions.missing_consent_patient_exception\
+    import MissingConsentPatientException
+from patient_management.domain.exceptions.missing_field__exception\
+    import MissingFieldException
+from patient_management.domain.exceptions.missing_guardian_consent_exception\
+    import MissingGuardianConsentException
+from patient_management.domain.exceptions.patient_already_exist_exception\
+    import PatientAlreadyExistsException
 from patient_management.tests.unit.seeds.unit_users import UnittestUsers
 from shared.adapters.secondary.fixed_id_generator import FixedIDGenerator
-from patient_management.infrastructure.adapter.secondary.in_memory_patient_repository import InMemoryPatientRepository
+from patient_management.infrastructure.adapter.secondary.in_memory_patient_repository\
+    import InMemoryPatientRepository
 from patient_management.tests.unit.seeds.unit_patients import UnittestPatients
 
 
