@@ -1,4 +1,4 @@
-name: Run Tests
+name: CI Pipeline
 
 on:
   push:
@@ -11,7 +11,32 @@ on:
       - develop
 
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Pylint
+        run: |
+          source venv/bin/activate
+          pylint --rcfile=.pylintrc --fail-under=8.0 .
+
   test:
+    needs: lint
     runs-on: ubuntu-latest
 
     services:
@@ -27,46 +52,43 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
 
-    - name: Setup xvfb (Linux)
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-xfixes0 libxcb-shape0 libglib2.0-0 libgl1-mesa-dev
-        sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
-        sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24 &
+      - name: Setup xvfb (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y xvfb libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-xfixes0 libxcb-shape0 libglib2.0-0 libgl1-mesa-dev
+          sudo apt-get install '^libxcb.*-dev' libx11-xcb-dev libglu1-mesa-dev libxrender-dev libxi-dev libxkbcommon-dev libxkbcommon-x11-dev
+          sudo /usr/bin/Xvfb $DISPLAY -screen 0 1280x1024x24 &
 
-    - name: Install Python dependencies
-      run: |
-        python -m venv venv
-        source venv/bin/activate
-        pip install --upgrade pip
-        pip install -r requirements.txt
+      - name: Install Python dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
 
-    - name: Setup MySQL
-      run: |
-        mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS medisecure;"
+      - name: Setup MySQL
+        run: |
+          mysql -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS medisecure;"
 
-    - name: Run Pylint
-      run: pylint --rcfile=.pylintrc --fail-under=8.0 .
+      - name: Run tests
+        env:
+          DISPLAY: ":99.0"
+          DB_URL: mysql+pymysql://admin:admin@127.0.0.1:3306/medisecure
+        run: |
+          source venv/bin/activate
+          xvfb-run python -m pytest --disable-warnings --capture=no -v --cov --cov-report=xml
 
-    - name: Run tests
-      env:
-        DISPLAY: ":99.0"
-        DB_URL: mysql+pymysql://admin:admin@127.0.0.1:3306/medisecure
-      run: |
-        source venv/bin/activate
-        xvfb-run python -m pytest --disable-warnings --capture=no -v --cov --cov-report=xml
-
-    - name: Upload coverage reports to Codecov
-      uses: codecov/codecov-action@v5
-      with:
-        files: ./coverage.xml
-        working-directory: ./
-        token: ${{ secrets.CODECOV_TOKEN }}
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: ./coverage.xml
+          working-directory: ./
+          token: ${{ secrets.CODECOV_TOKEN }}
